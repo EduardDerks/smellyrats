@@ -3,36 +3,50 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 
+
+# %%
 xl = pd.ExcelFile('onions.xls')
 # %%
-# %% LOAD DATA
-rat = (
+# %% LOAD SPECTRAL DATA
+hNMR = (
     pd.read_excel(xl,sheet_name='X')
     .rename(columns=lambda col: col.lower().replace("'", '')) 
 )
-rat.head()
+hNMR.head()
+# %% LOAD ONION DATA
+onions = (
+    pd.read_excel(xl,sheet_name='y')
+    .rename(columns=lambda col: col.lower().replace("'", '')) 
+)
+onions.head()
 
-print('HNMR spectra shape:', rat.shape)
-rat.head(5)
+print('Onions shape:', onions.shape)
+onions.head(5)
 
 # %%
-rat['delta/sample']
+hNMR['delta/sample']
 
 # %%
 
 print('Spectra is ranging from (ppm)')
-rat.index.min(), rat.index.max()
+hNMR.index.min(), hNMR.index.max()
 
 # %%
-rat.plot(y='h2-12-')
+hNMR.plot(y='h2-12-')
+
+
+# %%
+X = hNMR.transpose()
+
+
 
 
 
 # %%
 
 from scipy import interpolate
-x = rat['delta/sample']
-y = rat['h4-31' ]
+x = hNMR['delta/sample']
+y = hNMR['h4-31' ]
 f = interpolate.interp1d(x, y)
 
 %matplotlib auto
@@ -44,13 +58,13 @@ plt.xlabel('Chemical Shift (Delta)')
 plt.ylabel('Intensity')
 plt.show()
 
- 
-# %%
-np.array[rat['h4-31']]
 
 # %%
-y = np.array(rat)
+np.array[hNMR['h4-31']]
+
+# %%
+y = np.array(hNMR)
 plt.plot(y, label='data')
 
 # %%
-rat.plot(y='h4-31-')
+hNMR.plot(y='h4-31-')
